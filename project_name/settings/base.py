@@ -52,11 +52,11 @@ ALLOWED_HOSTS = []
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/London'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-gb'
+LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
@@ -127,41 +127,44 @@ ROOT_URLCONF = '{{ project_name }}.urls'
 WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
-INSTALLED_APPS = (
+# Splits Django's apps into manageable tuples
+# https://github.com/twoscoops/django-twoscoops-project/blob/develop/project_name/project_name/settings/base.py#L177-L200
+
+DJANGO_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.messages',
+)
 
+EXTERNAL_APPS = (
     'compressor',
     'debug_toolbar',
+)
 
+ADMIN_APPS = (
+    'grappelli',
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+)
 
+LOCAL_APPS = (
     'core',
 )
+
+INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + ADMIN_APPS + LOCAL_APPS
 
 EMAIL_SUBJECT_PREFIX = '[{{ project_name }}] '
 
 INTERNAL_IPS = ('127.0.0.1', '10.0.2.2')
 
-# django-debug-toolbar settings
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-}
-
 # django-compressor settings
 COMPRESS_PRECOMPILERS = (
-    ('text/coffeescript', 'coffee --compile --stdio'),
     ('text/less', 'lessc --no-color {infile} {outfile}'),
 )
 
