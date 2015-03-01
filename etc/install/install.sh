@@ -8,12 +8,11 @@ PROJECT_NAME=$1
 
 DB_NAME=$PROJECT_NAME
 VIRTUALENV_NAME=$PROJECT_NAME
+PGSQL_VERSION='9.4'
 
 PROJECT_DIR=/home/vagrant/$PROJECT_NAME
 VIRTUALENV_DIR=/home/vagrant/.virtualenvs/$PROJECT_NAME
 LOCAL_SETTINGS_PATH="/$PROJECT_NAME/settings/local.py"
-
-PGSQL_VERSION=9.3
 
 # Need to fix locale so that Postgres creates databases in UTF-8
 cp -p $PROJECT_DIR/etc/install/etc-bash.bashrc /etc/bash.bashrc
@@ -26,8 +25,10 @@ export LC_ALL=en_US.UTF-8
 
 # Install essential packages from Apt
 apt-get update -y
-# Python dev packages
-apt-get install -y build-essential python python-dev
+# Python 2 dev packages
+apt-get install -y build-essential python python-dev python-virtualenv python-pip
+# Python 3 dev packages
+apt-get install -y python3 python3-dev python3-virtualenv python3-pip python3-virtualenv
 # Dependencies for image processing with Pillow (drop-in replacement for PIL)
 # supporting: jpeg, tiff, png, freetype, littlecms
 # (pip install pillow to get pillow itself, it is not in requirements.txt)
@@ -39,18 +40,13 @@ apt-get install -y libyaml-dev node-less redis-server
 
 # Postgresql
 if ! command -v psql; then
-    apt-get install -y postgresql-$PGSQL_VERSION libpq-dev
+    apt-get install -y postgresql libpq-dev
     cp $PROJECT_DIR/etc/install/pg_hba.conf /etc/postgresql/$PGSQL_VERSION/main/
-    /etc/init.d/postgresql reload
+	service postgresql reload
 fi
 
 # virtualenv global setup
-if ! command -v pip; then
-    easy_install -U pip
-fi
-if [[ ! -f /usr/local/bin/virtualenv ]]; then
-    pip install virtualenv virtualenvwrapper stevedore virtualenv-clone
-fi
+pip3 install virtualenvwrapper stevedore virtualenv-clone
 
 # bash environment global setup
 cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.bashrc
@@ -64,7 +60,7 @@ createdb -Upostgres $DB_NAME
 cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.psqlrc
 
 # virtualenv setup for project
-su - vagrant -c "/usr/local/bin/virtualenv $VIRTUALENV_DIR && \
+su - vagrant -c "/usr/bin/virtualenv -p `which python3` $VIRTUALENV_DIR && \
     echo $PROJECT_DIR > $VIRTUALENV_DIR/.project && \
     $VIRTUALENV_DIR/bin/pip install -r $PROJECT_DIR/requirements.txt"
 
