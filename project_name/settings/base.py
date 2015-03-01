@@ -25,6 +25,9 @@ def get_env_setting(setting):
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = '{{ secret_key }}'
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -91,23 +94,15 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+STATICFILES_DIRS = (STATIC_ROOT)
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'compressor.finders.CompressorFinder',
 )
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '{{ secret_key }}'
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -117,7 +112,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
@@ -128,6 +122,12 @@ WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.messages.context_processors.messages',
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
 )
 
 # Splits Django's apps into manageable tuples
