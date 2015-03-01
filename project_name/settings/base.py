@@ -144,6 +144,7 @@ DJANGO_APPS = (
 )
 
 EXTERNAL_APPS = (
+    'django_extensions',
     'compressor',
     'debug_toolbar',
 )
