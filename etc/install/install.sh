@@ -27,15 +27,15 @@ export LC_ALL=en_US.UTF-8
 # Install essential packages from Apt
 apt-get update -y
 # Python dev packages
-apt-get install -y build-essential python python-dev libyaml-dev node-less redis-server
-# python-setuptools being installed manually
-wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
+apt-get install -y build-essential python python-dev
 # Dependencies for image processing with Pillow (drop-in replacement for PIL)
 # supporting: jpeg, tiff, png, freetype, littlecms
 # (pip install pillow to get pillow itself, it is not in requirements.txt)
 apt-get install -y libjpeg-dev libtiff-dev zlib1g-dev libfreetype6-dev liblcms2-dev
 # Git (we'd rather avoid people keeping credentials for git commits in the repo, but sometimes we need it for pip requirements that aren't in PyPI)
 apt-get install -y git
+# Extra packages used for Django
+apt-get install -y libyaml-dev node-less redis-server
 
 # Postgresql
 if ! command -v psql; then
