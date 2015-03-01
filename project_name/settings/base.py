@@ -8,6 +8,20 @@ PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
 # Modify sys.path to include the lib directory
 sys.path.append(os.path.join(PROJECT_ROOT, "lib"))
 
+# Import settings from the environment
+# https://github.com/twoscoops/django-twoscoops-project/blob/develop/project_name/project_name/settings/production.py#L9-L20
+from django.core.exceptions import ImproperlyConfigured
+from os import environ
+
+def get_env_setting(setting):
+    """ Get the environment setting or return exception """
+    try:
+        return environ[setting]
+    except KeyError:
+        error_msg = "Set the `{0}` env variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+# NEVER EVER SET THIS IS PROD
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
