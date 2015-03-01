@@ -74,6 +74,9 @@ fi
 # postgresql setup for project
 createdb -Upostgres $DB_NAME
 
+# Pretty psqlrc
+cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.psqlrc
+
 # virtualenv setup for project
 su - vagrant -c "/usr/local/bin/virtualenv $VIRTUALENV_DIR && \
     echo $PROJECT_DIR > $VIRTUALENV_DIR/.project && \
