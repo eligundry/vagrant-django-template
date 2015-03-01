@@ -36,7 +36,7 @@ apt-get install -y libjpeg-dev libtiff-dev zlib1g-dev libfreetype6-dev liblcms2-
 # Git (we'd rather avoid people keeping credentials for git commits in the repo, but sometimes we need it for pip requirements that aren't in PyPI)
 apt-get install -y git
 # Extra packages used for Django
-apt-get install -y libyaml-dev node-less redis-server
+apt-get install -y libyaml-dev node-less redis-server yui-compressor
 
 # Postgresql
 if ! command -v psql; then

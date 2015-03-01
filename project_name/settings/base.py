@@ -165,6 +165,13 @@ EMAIL_SUBJECT_PREFIX = '[{{ project_name }}] '
 INTERNAL_IPS = ('127.0.0.1', '10.0.2.2')
 
 # django-compressor settings
+import subprocess
+COMPRESS_YUI_BINARY = subprocess.check_output(['which', 'yui-compressor']).decode('utf-8').strip('\n')
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.yui.YUICSSFilter'
+]
+COMPRESS_JS_FILTERS = ['compressor.filters.yui.YUIJSFilter']
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc --no-color {infile} {outfile}'),
 )
