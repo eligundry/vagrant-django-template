@@ -17,17 +17,17 @@ PGSQL_VERSION=9.3
 
 # Need to fix locale so that Postgres creates databases in UTF-8
 cp -p $PROJECT_DIR/etc/install/etc-bash.bashrc /etc/bash.bashrc
-locale-gen en_GB.UTF-8
+locale-gen en_US.UTF-8
 dpkg-reconfigure locales
 
-export LANGUAGE=en_GB.UTF-8
-export LANG=en_GB.UTF-8
-export LC_ALL=en_GB.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # Install essential packages from Apt
 apt-get update -y
 # Python dev packages
-apt-get install -y build-essential python python-dev
+apt-get install -y build-essential python python-dev libyaml-dev node-less redis-server
 # python-setuptools being installed manually
 wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
 # Dependencies for image processing with Pillow (drop-in replacement for PIL)
@@ -68,9 +68,6 @@ fi
 if ! command -v coffee; then
     npm install -g coffee-script
 fi
-if ! command -v lessc; then
-    npm install -g less
-fi
 
 # ---
 
@@ -88,7 +85,9 @@ echo "workon $VIRTUALENV_NAME" >> /home/vagrant/.bashrc
 chmod a+x $PROJECT_DIR/manage.py
 
 # Django project setup
-su - vagrant -c "source $VIRTUALENV_DIR/bin/activate && cd $PROJECT_DIR && ./manage.py syncdb --noinput && ./manage.py migrate"
+su - vagrant -c "source $VIRTUALENV_DIR/bin/activate && \
+	cd $PROJECT_DIR && ./manage.py syncdb --noinput && ./manage.py migrate && \
+	./manage.py collectstatic <<< yes"
 
 # Add settings/local.py to gitignore
 if ! grep -Fqx $LOCAL_SETTINGS_PATH $PROJECT_DIR/.gitignore
