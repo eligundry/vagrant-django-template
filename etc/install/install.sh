@@ -54,7 +54,6 @@ fi
 
 # bash environment global setup
 cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.bashrc
-su - vagrant -c "mkdir -p /home/vagrant/.pip_download_cache"
 
 # Node.js, CoffeeScript and LESS
 if ! command -v npm; then
