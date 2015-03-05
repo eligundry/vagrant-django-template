@@ -5,6 +5,10 @@
 # Installation settings
 
 PROJECT_NAME=$1
+SECRET_KEY=$2
+PROD_DB_PASSWORD=$3
+DEV_DB_PASSWORD=$4
+TEST_DB_PASSWORD=$5
 
 DB_NAME=$PROJECT_NAME
 VIRTUALENV_NAME=$PROJECT_NAME
@@ -36,7 +40,7 @@ apt-get install -y libjpeg-dev libtiff-dev zlib1g-dev libfreetype6-dev liblcms2-
 # Git (we'd rather avoid people keeping credentials for git commits in the repo, but sometimes we need it for pip requirements that aren't in PyPI)
 apt-get install -y git
 # Extra packages used for Django
-apt-get install -y libyaml-dev node-less redis-server yui-compressor
+apt-get install -y libyaml-dev node-less redis-server yui-compressor nginx
 
 # Postgresql
 if ! command -v psql; then
@@ -45,8 +49,12 @@ if ! command -v psql; then
 	service postgresql reload
 fi
 
-# virtualenv global setup
-pip3 install virtualenvwrapper stevedore virtualenv-clone
+# Setup nginx user
+mkdir /webapps
+groupadd webapps
+useradd -g webapps -M -d /webapps -s /usr/sbin/nologin webapps
+chown -R webapps:webapps /webapps
+chown -R 775 /webapps
 
 # bash environment global setup
 cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.bashrc
@@ -54,7 +62,9 @@ cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.bashrc
 # ---
 
 # postgresql setup for project
-createdb -Upostgres $DB_NAME
+createdb -Upostgres "$DB_NAME_prod"
+createdb -Upostgres "$DB_NAME_local"
+createdb -Upostgres "$DB_NAME_test"
 
 # Pretty psqlrc
 cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.psqlrc

@@ -26,7 +26,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '{{ secret_key }}'
+SECRET_KEY = get_env_setting('DJANGO_SECRET_KEY')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
