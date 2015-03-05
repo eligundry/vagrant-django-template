@@ -58,9 +58,10 @@ if ! command -v psql; then
 fi
 
 # Setup nginx user
-mkdir /webapps
+mkdir -p /webapps/virtualenvs
 groupadd webapps
-useradd -g webapps -M -d /webapps -s /usr/sbin/nologin webapps
+useradd -g webapps -M -d /webapps -s webapps
+passwd -d webapps
 chown -R webapps:webapps /webapps
 chown -R 775 /webapps
 
