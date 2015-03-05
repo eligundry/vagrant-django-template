@@ -15,12 +15,12 @@ PROD_DB_PASSWORD=$3
 DEV_DB_PASSWORD=$4
 TEST_DB_PASSWORD=$5
 
-PROD_DB_USER=$DB_NAME + '_prod_user'
-PROD_DB=$DB_NAME + '_prod'
-DEV_DB_USER=$DB_NAME + '_dev_user'
-DEV_DB=$DB_NAME + '_dev'
+PROD_DB_USER=$DB_NAME'_prod_user'
+PROD_DB=$DB_NAME'_prod'
+DEV_DB_USER=$DB_NAME'_dev_user'
+DEV_DB=$DB_NAME'_dev'
 TEST_DB_USER=$DB_NAME + 'test_user'
-TEST_DB=$DB_NAME + '_test'
+TEST_DB=$DB_NAME'_test'
 
 PROJECT_DIR=/home/vagrant/$PROJECT_NAME
 VIRTUALENV_DIR=/home/vagrant/.virtualenvs/$PROJECT_NAME
