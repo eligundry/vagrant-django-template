@@ -26,7 +26,7 @@ export LC_ALL=en_US.UTF-8
 # Install essential packages from Apt
 apt-get update -y
 # Python 2 dev packages
-apt-get install -y build-essential python python-dev python-virtualenv python-pip
+apt-get install -y build-essential python python-dev python-virtualenv python-pip virtualenvwrapper
 # Python 3 dev packages
 apt-get install -y python3 python3-dev python3-virtualenv python3-pip python3-virtualenv
 # Dependencies for image processing with Pillow (drop-in replacement for PIL)
