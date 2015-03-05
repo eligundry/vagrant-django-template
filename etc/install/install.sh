@@ -5,14 +5,22 @@
 # Installation settings
 
 PROJECT_NAME=$1
+
+DB_NAME=$PROJECT_NAME
+VIRTUALENV_NAME=$PROJECT_NAME
+PGSQL_VERSION='9.4'
+
 SECRET_KEY=$2
 PROD_DB_PASSWORD=$3
 DEV_DB_PASSWORD=$4
 TEST_DB_PASSWORD=$5
 
-DB_NAME=$PROJECT_NAME
-VIRTUALENV_NAME=$PROJECT_NAME
-PGSQL_VERSION='9.4'
+PROD_DB_USER=$DB_NAME + '_prod_user'
+PROD_DB=$DB_NAME + '_prod'
+DEV_DB_USER=$DB_NAME + '_dev_user'
+DEV_DB=$DB_NAME + '_dev'
+TEST_DB_USER=$DB_NAME + 'test_user'
+TEST_DB=$DB_NAME + '_test'
 
 PROJECT_DIR=/home/vagrant/$PROJECT_NAME
 VIRTUALENV_DIR=/home/vagrant/.virtualenvs/$PROJECT_NAME
@@ -62,9 +70,12 @@ cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.bashrc
 # ---
 
 # postgresql setup for project
-createdb -Upostgres "$DB_NAME_prod"
-createdb -Upostgres "$DB_NAME_local"
-createdb -Upostgres "$DB_NAME_test"
+createuser -l -P -S -d $PROD_DB_USER <<< $PROD_DB_PASSWORD
+createuser -l -P -S -d $DEV_DB_USER <<< $DEV_DB_PASSWORD
+createuser -l -P -S -d $TEST_DB_USER <<< $TEST_DB_PASSWORD
+createdb -U$PROD_DB_USER $PROD_DB
+createdb -U$DEV_DB_USER $DEV_DB
+createdb -U$TEST_DB_USER $TEST_DB
 
 # Pretty psqlrc
 cp -p $PROJECT_DIR/etc/install/bashrc /home/vagrant/.psqlrc
